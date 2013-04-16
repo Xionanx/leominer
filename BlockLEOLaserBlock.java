@@ -130,8 +130,6 @@ public class BlockLEOLaserBlock extends Block
      */
     public void onFinishFalling(World par1World, int par2, int par3, int par4, int par5, int par6)
     {
-    	super.breakBlock(par1World, par2, par3, par4, par5, par6);
-		for (int depth = par3 - 0; depth > 0; depth--) 
-			par1World.setBlock(par2, depth, par4, 0);
+			par1World.setBlock(par2, par3-1, par4, 0);
 	}
 }
