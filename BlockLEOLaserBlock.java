@@ -2,28 +2,27 @@ package leominer;
 
 import java.util.Random;
 
-import buildcraft.BuildCraftFactory;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityFallingSand;
 import net.minecraft.world.World;
 
-public class BlockLEOLaserBlock extends Block 
+
+public class BlockLEOLaserBlock extends Block
 {
-	/** Do blocks fall instantly to where they stop or do they fall over time */
+    /** Do blocks fall instantly to where they stop or do they fall over time */
     public static boolean fallInstantly = false;
 
-    public BlockLEOLaserBlock(int id)
+    public BlockLEOLaserBlock(int par1)
     {
-        super(id, Material.sand);
+        super(par1, Material.sand);
         this.setCreativeTab(CreativeTabs.tabBlock);
     }
 
-    public BlockLEOLaserBlock(int id, Material par2Material)
+    public BlockLEOLaserBlock(int par1, Material par2Material)
     {
-        super(id, par2Material);
+        super(par1, par2Material);
     }
 
     /**
@@ -32,9 +31,20 @@ public class BlockLEOLaserBlock extends Block
     public void onBlockAdded(World par1World, int par2, int par3, int par4)
     {
         par1World.scheduleBlockUpdate(par2, par3, par4, this.blockID, this.tickRate(par1World));
+        /**
+         * Check the block below and if its bedrock, cease to exist
+         */
+        if (par1World.getBlockId(par2, par3-1, par4) == 7)
+        {
+        	par1World.setBlock(par2, par3, par4, 0);
+        }
+        else
+        /**
+         * if its not bedrock replace the block below with air.
+         */
+        par1World.setBlock(par2, par3-1, par4, 0);
     }
 
-	    
     /**
      * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
      * their own) Args: x, y, z, neighbor blockID
@@ -128,8 +138,6 @@ public class BlockLEOLaserBlock extends Block
     /**
      * Called when the falling block entity for this block hits the ground and turns back into a block
      */
-    public void onFinishFalling(World par1World, int par2, int par3, int par4, int par5, int par6)
-    {
-			par1World.setBlock(par2, par3-1, par4, 0);
-	}
+    public void onFinishFalling(World par1World, int par2, int par3, int par4, int par5, int par6) {}
+  
 }
