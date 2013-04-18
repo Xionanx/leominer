@@ -1,7 +1,6 @@
 package leominer;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraftforge.common.Configuration;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
@@ -19,23 +18,38 @@ public class LEOMiner
     public static final String modid = "Xionanx_LeoMiner";
 
 
-    public static Block leolaserBlock;
-    public static int leolaserBlockID;
+    public static Block leolaserBeam;
+    public static Block leolaserController;
+    
+    public static int leolaserControllerID;
+    public static int leolaserBeamID;
+    public static int laserTtl;
     
     @PreInit
     public void preInit(FMLPreInitializationEvent event)
     {
     	Configuration config = new Configuration(event.getSuggestedConfigurationFile());
         config.load();
-        leolaserBlockID = config.getBlock("leolaserBlock", 500).getInt();
+        leolaserBeamID = config.getBlock("leolaserBeam", 500).getInt();
+        
+        leolaserControllerID = config.getBlock("leolaserController", 501).getInt();
+        
+        laserTtl = config.get(Configuration.CATEGORY_GENERAL, "LaserTimeToLive", 60).getInt();
+        
+        
         config.save();
     }
     @Init
     public void load(FMLInitializationEvent event)
     {
-        leolaserBlock = new LEOLaserBlock(leolaserBlockID).setUnlocalizedName("leolaserBlock");
-        GameRegistry.registerBlock(leolaserBlock, modid + leolaserBlock.getUnlocalizedName2());
-        LanguageRegistry.addName(leolaserBlock, "LEO Laser Block");
+        leolaserBeam = new LEOLaserBeam(leolaserBeamID).setUnlocalizedName("leolaserBeam");
+        GameRegistry.registerBlock(leolaserBeam, modid + leolaserBeam.getUnlocalizedName2());
+        LanguageRegistry.addName(leolaserBeam, "LEO Laser Block");
+
+        leolaserController = new LEOLaserController(leolaserControllerID, 0).setUnlocalizedName("leolaserController");
+        GameRegistry.registerBlock(leolaserController, modid + leolaserController.getUnlocalizedName2());
+        LanguageRegistry.addName(leolaserController, "LEO Laser Controller");
+       
     }
 }
 
